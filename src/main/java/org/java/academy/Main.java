@@ -1,4 +1,5 @@
 package org.java.academy;
+
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -27,5 +28,4 @@ public class Main {
             }
         }
     }
-
 }
