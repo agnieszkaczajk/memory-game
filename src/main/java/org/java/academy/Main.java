@@ -17,6 +17,7 @@ public class Main {
         game.gameLevel = game.start(console);
 
         System.out.println(game.gameLevel);
+        System.out.println("Thank you!");
 
 
     }
