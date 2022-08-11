@@ -7,7 +7,7 @@ public class Board{
     private List<String> words = new ArrayList<>();
     private Word word;
     private Map<String, List<Word>> boardMap = new HashMap<>();
-    int rowSize = 4;
+    //int rowSize = 4;
 
 
     Board(List<String> words){
@@ -31,12 +31,30 @@ public class Board{
         boardMap.put(rowLabelB,wordChoice.subList(words.size()/2, words.size()));
         System.out.println(boardMap);
 
-        System.out.println(wordChoice.get(1));
-
-
     }
 
+    public Map<String, List<Word>> getBoardMap() {
+        return boardMap;
+    }
 
+    public boolean isPlayerWon() {
+        boolean successFlag = true;
+        for(String key : boardMap.keySet()) {
+            List<Word> wordsInRow = boardMap.get(key);
+            for(Word wordElement : wordsInRow) {
+                successFlag = successFlag && wordElement.isGuessed();
+            }
+        }
+        return successFlag;
+    }
 
-        //private map<String letter, List<Words>
+   /* public void didYouWin(Map<String, List<Word>> boardMap) {
+
+        for (:
+             ) {
+
+        }
+    }*/
+
+    //private map<String letter, List<Words>
 }

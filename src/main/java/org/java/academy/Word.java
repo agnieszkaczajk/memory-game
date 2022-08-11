@@ -2,7 +2,7 @@ package org.java.academy;
 
 public class Word{
     private String word;
-    private boolean guessed = true;
+    private boolean guessed = false;
     private boolean uncovered = false;
 
     Word(String word){
@@ -31,6 +31,15 @@ public class Word{
 
     public void setUncovered(boolean uncovered) {
         this.uncovered = uncovered;
+    }
+
+    @Override
+    public boolean equals(Object obj){
+        if(obj.toString() == this.word) {
+            return true;
+        } else{
+            return false;
+        }
     }
 
     public String toString() {
