@@ -3,15 +3,13 @@ package org.java.academy;
 
 public class GameLevel {
 
-    private final String level;
+    private final DifficultyLevel level;
     private final int guessChances;
 
-    GameLevel(String level, int guessChances){
+    GameLevel(DifficultyLevel level, int guessChances){
         this.level=level;
         this.guessChances = guessChances;
     }
-
-
 
 
     @Override
@@ -20,4 +18,18 @@ public class GameLevel {
                 "Level: " + level + "\n" +
                 "Guess chances: " + guessChances;
     }
+
+    public enum DifficultyLevel {
+        EASY(4),
+        HARD(8);
+
+        int numberOfWords;
+
+        DifficultyLevel(int numberOfWords) {
+            this.numberOfWords = numberOfWords;
+        }
+
+    }
+
+
 }
