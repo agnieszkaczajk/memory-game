@@ -12,6 +12,10 @@ public class GameLevel {
         this.guessChances = guessChances;
     }
 
+    public DifficultyLevel getLevel(){
+        return level;
+    }
+
 
     @Override
     public String toString() {

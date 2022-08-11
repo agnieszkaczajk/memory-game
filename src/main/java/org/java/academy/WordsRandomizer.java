@@ -33,7 +33,7 @@ public class WordsRandomizer {
             String randomElement = drawWithoutRepetition.get(randomIndex);
             result.add(i, randomElement);
             drawWithoutRepetition.remove(randomIndex);
-            System.out.println(result.get(i));
+           // System.out.println(result.get(i));
         }
 
 
