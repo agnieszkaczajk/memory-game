@@ -7,6 +7,7 @@ import java.util.*;
 public class WordsRandomizer {
 
     static List<String> listOfWords = new ArrayList<>();
+    public String word;
 
 
 

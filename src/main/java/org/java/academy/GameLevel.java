@@ -6,6 +6,7 @@ public class GameLevel {
     private final DifficultyLevel level;
     private final int guessChances;
 
+
     GameLevel(DifficultyLevel level, int guessChances){
         this.level=level;
         this.guessChances = guessChances;
