@@ -1,13 +1,18 @@
 package org.java.academy;
 
 import java.io.*;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 public class Main {
 
     private static final String path = "src/main/resources/Words.txt";
     private static WordsRandomizer wordsRandomizer;
-    private GameLevel gameLevel;
+    private static GameLevel gameLevel;
+
+    private static Board board;
+
 
 
     public static void main(String[] args) throws IOException {
@@ -17,9 +22,21 @@ public class Main {
         game.gameLevel = game.start(console);
 
         System.out.println(game.gameLevel);
+
+        memoryBoard();
+
+       /* board = new Board(wordsRandomizer.randomWordsByDifficultyLevel(gameLevel.getLevel()));
+        board.createBoard();*/
+
         System.out.println("Thank you!");
 
 
+
+    }
+
+    private static void memoryBoard() {
+        board = new Board(wordsRandomizer.randomWordsByDifficultyLevel(gameLevel.getLevel()));
+        board.createWordsChoice();
     }
 
     public static void initialization() throws IOException {
@@ -42,7 +59,6 @@ public class Main {
 
                 int guessChances = 10;
                 gameLevel = new GameLevel(GameLevel.DifficultyLevel.EASY, guessChances);
-                wordsRandomizer.randomWordsByDifficultyLevel(GameLevel.DifficultyLevel.EASY);
 
                 break;
 
@@ -52,7 +68,6 @@ public class Main {
 
                 int guessChances = 15;
                 gameLevel = new GameLevel(GameLevel.DifficultyLevel.HARD, guessChances);
-                wordsRandomizer.randomWordsByDifficultyLevel(GameLevel.DifficultyLevel.HARD);
                 break;
 
             } else {
