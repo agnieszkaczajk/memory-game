@@ -9,14 +9,6 @@ public class Word{
         this.word=word;
     }
 
-    public String getWord() {
-        return word;
-    }
-
-    public void setWord(String word) {
-        this.word = word;
-    }
-
     public boolean isGuessed(){
         return guessed;
     }

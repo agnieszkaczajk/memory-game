@@ -9,8 +9,6 @@ public class WordsRandomizer {
     static List<String> listOfWords = new ArrayList<>();
     public String word;
 
-
-
     WordsRandomizer(String path) throws IOException {
 
         try(FileInputStream fileInputStream = new FileInputStream(path);
@@ -33,16 +31,12 @@ public class WordsRandomizer {
             String randomElement = drawWithoutRepetition.get(randomIndex);
             result.add(i, randomElement);
             drawWithoutRepetition.remove(randomIndex);
-           // System.out.println(result.get(i));
         }
-
-
         return result;
     }
 
     List<String> randomWordsByDifficultyLevel(GameLevel.DifficultyLevel level) {
         return randomWordsByNumber(level.numberOfWords);
     }
-
 
 }
