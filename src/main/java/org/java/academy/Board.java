@@ -7,8 +7,7 @@ public class Board{
     private List<String> words = new ArrayList<>();
     private Word word;
     private Map<String, List<Word>> boardMap = new HashMap<>();
-    //int rowSize = 4;
-
+    int numberOfRows = 2;
 
     Board(List<String> words){
         this.words.addAll(words);
@@ -24,12 +23,10 @@ public class Board{
         for (int i = 0; i < words.size(); i++) {
             word = new Word(words.get(i));
             wordChoice.add(word);
-
         }
 
-        boardMap.put(rowLabelA,wordChoice.subList(0, words.size()/2));
-        boardMap.put(rowLabelB,wordChoice.subList(words.size()/2, words.size()));
-        System.out.println(boardMap);
+        boardMap.put(rowLabelA,wordChoice.subList(0, words.size()/numberOfRows));
+        boardMap.put(rowLabelB,wordChoice.subList(words.size()/numberOfRows, words.size()));
 
     }
 
@@ -48,13 +45,29 @@ public class Board{
         return successFlag;
     }
 
-   /* public void didYouWin(Map<String, List<Word>> boardMap) {
+    public String printBoard() {
+        StringBuilder boardPrint = new StringBuilder();
+        boardPrint.append("\n");
+        boardPrint.append("  ");
 
-        for (:
-             ) {
+        for(int number = 1; number <= words.size()/numberOfRows; number++){
+            boardPrint.append(number).append(" ");
+        }
+        boardPrint.append("\n");
+
+        for(String key : boardMap.keySet()) {
+            List<Word> wordsInRow = boardMap.get(key);
+            boardPrint.append(key).append(" ");
+            for(Word word : wordsInRow) {
+                boardPrint.append(word.toString()).append(" ");
+            }
+            boardPrint.append("\n");
 
         }
-    }*/
+        boardPrint.append("--------------------");
+        return boardPrint.toString();
+    }
 
-    //private map<String letter, List<Words>
+
+
 }
