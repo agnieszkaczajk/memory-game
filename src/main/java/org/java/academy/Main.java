@@ -2,6 +2,8 @@ package org.java.academy;
 
 import java.io.*;
 import java.util.Scanner;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class Main {
 
@@ -13,6 +15,7 @@ public class Main {
 
     private boolean startAgain = true;
 
+    String answerRegExp = "[aAbB]\\d";
 
 
     public static void main(String[] args) throws IOException {
@@ -27,7 +30,7 @@ public class Main {
 
             game.play(console);
 
-            game.ending(console);
+            game.startAgain = game.ending(console);
 
 
             System.out.println("Thank you!");
@@ -55,7 +58,7 @@ public class Main {
 
                 System.out.println("You have chosen level easy");
 
-                int guessChances = 3;
+                int guessChances = 10;
                 gameLevel = new GameLevel(GameLevel.DifficultyLevel.EASY, guessChances);
 
                 break;
@@ -83,30 +86,13 @@ public class Main {
 
         board = new Board(wordsRandomizer.randomWordsByDifficultyLevel(gameLevel.getLevel()));
         board.createWordsChoice();
-        System.out.println(board.printBoard());
+
 
         while(gameLevel.guessChances>0) {
-            System.out.println("Choose a word to reveal (e.g. A1)!");
-
-            String answer = console.next().toUpperCase();
-            //TODO regular expresion to validte inserted field id
-
-
-            String rowName = answer.substring(0, 1);
-            int columnId = Integer.parseInt(answer.substring(1));
-
-            Word one = board.getBoardMap().get(rowName).get(columnId-1);
+            Word one = askForWord(console);
             one.setUncovered(true);
 
-           System.out.println(board.printBoard());
-
-            System.out.println("Choose second word to reveal!");
-            String answer2 = console.next().toUpperCase();
-
-            String rowName2 = answer2.substring(0, 1);
-            int columnId2 = Integer.parseInt(answer2.substring(1));
-
-            Word two = board.getBoardMap().get(rowName2).get(columnId2-1);
+            Word two = askForWord(console);
             two.setUncovered(true);
             System.out.println(board.printBoard());
 
@@ -116,7 +102,6 @@ public class Main {
                 gameLevel.guessChances -= 1;
                 System.out.println("Sorry, words did not match. Try again");
                 System.out.println(gameLevel.toString());
-                System.out.println(board.printBoard());
                 System.out.println(gameLevel.guessChances);
                 if(gameLevel.guessChances == 0) {
                     System.out.println("Sorry, You're looser!");
@@ -127,13 +112,12 @@ public class Main {
 
                 System.out.println("Yay! This is a pair!");
                 System.out.println(gameLevel.toString());
-                System.out.println(board.printBoard());
                 one.setGuessed(true);
                 two.setGuessed(true);
 
                 if(gameLevel.guessChances==0) break;
             } else{
-                System.out.println("Ups! something gone wrong! Try egain!");
+                System.out.println("Ups! Something gone wrong! Try again!");
             }
 
             if(board.isPlayerWon()){
@@ -145,23 +129,65 @@ public class Main {
 
     }
 
-    private boolean ending(Scanner console){
+    private Word askForWord(Scanner console) {
+        while (true) {
+            System.out.println(board.printBoard());
+            System.out.println("Choose a word to reveal (e.g. A1)!");
 
+            String answer = console.next().toUpperCase();
+            if(inputValidation(answer, gameLevel.getLevel())) {
+                String rowName = answer.substring(0, 1);
+                int columnId = Integer.parseInt(answer.substring(1));
+
+                Word checkIsUncovered = board.getBoardMap().get(rowName).get(columnId-1);
+                //return board.getBoardMap().get(rowName).get(columnId-1);
+                if(checkIsUncovered.isUncovered() || checkIsUncovered.isGuessed()){
+                    System.out.println("Oops! This word is already face up! Choose again!");
+                } else{
+                    return checkIsUncovered;
+                }
+            }
+        }
+    }
+
+    private boolean ending(Scanner console){
+        boolean playAgain = false;
 
         System.out.println("Do you want to play again?");
         System.out.println("Enter 'y' to start memory again or 'n' to exit.");
 
         String answer = console.next().toLowerCase();
 
-        if(answer.equals("y")){
-            startAgain = true;
-        } else if (answer.equals("n")){
-            startAgain = false;
-        } else {
-            System.out.print("Ups, You have mistaken! Enter 'y' to start memory again or 'n' to exit. \n");
-            answer = console.next().toLowerCase();
+        while(true){
+            if(answer.equals("y")){
+                playAgain = true;
+                break;
+            } else if (answer.equals("n")){
+                playAgain = false;
+                break;
+            } else {
+                System.out.print("Oops, you've made a mistake! Enter 'y' to start memory again or 'n' to exit. \n");
+                answer = console.next().toLowerCase();
+            }
         }
-        return startAgain;
+        return playAgain;
+    }
+
+     boolean inputValidation(String answerToValidate, GameLevel.DifficultyLevel level){
+
+        Pattern pattern = Pattern.compile(answerRegExp);
+        Matcher matcher = pattern.matcher(answerToValidate);
+
+        if(matcher.matches()){
+            int answerNumber = Integer.parseInt(answerToValidate.substring(1));
+            if(answerNumber <= level.numberOfWords && answerNumber > 0){
+                return  true;
+            }
+
+        }
+
+        System.out.println("Oops, you've made a mistake! Choose again! \n");
+        return false;
     }
 
 }
