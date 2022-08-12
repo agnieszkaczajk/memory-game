@@ -1,7 +1,11 @@
 package org.java.academy;
 
 import java.io.*;
+import java.sql.Timestamp;
+import java.time.Duration;
+import java.time.Instant;
 import java.util.Scanner;
+import java.util.Timer;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -10,6 +14,8 @@ public class Main {
     private static final String path = "src/main/resources/Words.txt";
     private static WordsRandomizer wordsRandomizer;
     private static GameLevel gameLevel;
+
+    private int guessChanceStart;
 
     private static Board board;
 
@@ -58,8 +64,8 @@ public class Main {
 
                 System.out.println("You have chosen level easy");
 
-                int guessChances = 10;
-                gameLevel = new GameLevel(GameLevel.DifficultyLevel.EASY, guessChances);
+                guessChanceStart = 10;
+                gameLevel = new GameLevel(GameLevel.DifficultyLevel.EASY, guessChanceStart);
 
                 break;
 
@@ -67,8 +73,8 @@ public class Main {
 
                 System.out.println("You have chosen level hard");
 
-                int guessChances = 15;
-                gameLevel = new GameLevel(GameLevel.DifficultyLevel.HARD, guessChances);
+                guessChanceStart = 15;
+                gameLevel = new GameLevel(GameLevel.DifficultyLevel.HARD, guessChanceStart);
                 break;
 
             } else {
@@ -87,6 +93,8 @@ public class Main {
         board = new Board(wordsRandomizer.randomWordsByDifficultyLevel(gameLevel.getLevel()));
         board.createWordsChoice();
 
+        //Instant start = Instant.now();
+        Instant start = Instant.now();
 
         while(gameLevel.guessChances>0) {
             Word one = askForWord(console);
@@ -122,8 +130,15 @@ public class Main {
 
             if(board.isPlayerWon()){
                 System.out.println("Congratulations! You're winner! ");
+                Instant stop = Instant.now();
+                int leftChances = guessChanceStart- gameLevel.guessChances;
+                long timeElapsed = Duration.between(start,stop).getSeconds();
+                System.out.println("You solved the memory game after " + leftChances +
+                        " chances. It took you " + timeElapsed +" seconds.");
                 break;
             }
+
+
 
         }
 
