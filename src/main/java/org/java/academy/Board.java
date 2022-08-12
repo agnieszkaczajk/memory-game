@@ -48,7 +48,6 @@ public class Board{
     public String printBoard() {
         StringBuilder boardPrint = new StringBuilder();
         boardPrint.append("\n");
-        boardPrint.append("  ");
 
         for(int number = 1; number <= words.size()/numberOfRows; number++){
             boardPrint.append(number).append(" ");
