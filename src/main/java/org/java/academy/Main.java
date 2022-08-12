@@ -1,8 +1,6 @@
 package org.java.academy;
 
 import java.io.*;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Scanner;
 
 public class Main {
@@ -13,35 +11,33 @@ public class Main {
 
     private static Board board;
 
+    private boolean startAgain = true;
+
 
 
     public static void main(String[] args) throws IOException {
         initialization();
         Scanner console = new Scanner(System.in);
         Main game = new Main();
-        game.gameLevel = game.start(console);
 
-        System.out.println(game.gameLevel);
+        while(game.startAgain) {
+            game.gameLevel = game.start(console);
 
-        game.play(console);
+            System.out.println(game.gameLevel);
+
+            game.play(console);
+
+            game.ending(console);
 
 
-
-        //memoryBoard();
-
-
-        System.out.println("Thank you!");
-
+            System.out.println("Thank you!");
+            System.out.println("Come back soon to play memory again!");
+        }
 
 
     }
 
-  /*  private static void memoryBoard() {
-        board = new Board(wordsRandomizer.randomWordsByDifficultyLevel(gameLevel.getLevel()));
-        board.createWordsChoice();
-    }*/
-
-    public static void initialization() throws IOException {
+      public static void initialization() throws IOException {
         wordsRandomizer = new WordsRandomizer(path);
     }
 
@@ -59,7 +55,7 @@ public class Main {
 
                 System.out.println("You have chosen level easy");
 
-                int guessChances = 10;
+                int guessChances = 3;
                 gameLevel = new GameLevel(GameLevel.DifficultyLevel.EASY, guessChances);
 
                 break;
@@ -82,15 +78,15 @@ public class Main {
 
     }
 
-    private Board play(Scanner console){
+    private void play(Scanner console){
 
-        //memoryBoard();
+
         board = new Board(wordsRandomizer.randomWordsByDifficultyLevel(gameLevel.getLevel()));
         board.createWordsChoice();
+        System.out.println(board.printBoard());
 
         while(gameLevel.guessChances>0) {
             System.out.println("Choose a word to reveal (e.g. A1)!");
-           // System.out.println("Choose a word to reveal (e.g. A1)!");
 
             String answer = console.next().toUpperCase();
             //TODO regular expresion to validte inserted field id
@@ -102,8 +98,7 @@ public class Main {
             Word one = board.getBoardMap().get(rowName).get(columnId-1);
             one.setUncovered(true);
 
-            //System.out.println(board.getBoardMap().get(rowName).get(columnId-1));
-            System.out.println(board.getBoardMap());
+           System.out.println(board.printBoard());
 
             System.out.println("Choose second word to reveal!");
             String answer2 = console.next().toUpperCase();
@@ -113,15 +108,15 @@ public class Main {
 
             Word two = board.getBoardMap().get(rowName2).get(columnId2-1);
             two.setUncovered(true);
-            System.out.println(board.getBoardMap());
+            System.out.println(board.printBoard());
 
             if(!one.equals(two)){
                 one.setUncovered(false);
                 two.setUncovered(false);
                 gameLevel.guessChances -= 1;
-                gameLevel.nextMove();
-                System.out.println("Sorry words did not match. Try again");
-                System.out.println(board.getBoardMap());
+                System.out.println("Sorry, words did not match. Try again");
+                System.out.println(gameLevel.toString());
+                System.out.println(board.printBoard());
                 System.out.println(gameLevel.guessChances);
                 if(gameLevel.guessChances == 0) {
                     System.out.println("Sorry, You're looser!");
@@ -130,28 +125,43 @@ public class Main {
 
             } else if (one.equals(two)){
 
-                System.out.println("Yay this is pair!");
-                System.out.println(board.getBoardMap());
-                //gameLevel.nextMove();
+                System.out.println("Yay! This is a pair!");
+                System.out.println(gameLevel.toString());
+                System.out.println(board.printBoard());
                 one.setGuessed(true);
                 two.setGuessed(true);
+
                 if(gameLevel.guessChances==0) break;
             } else{
                 System.out.println("Ups! something gone wrong! Try egain!");
             }
 
-            System.out.println("game status: e" + board.isPlayerWon());
-            //break;
+            if(board.isPlayerWon()){
+                System.out.println("Congratulations! You're winner! ");
+                break;
+            }
+
         }
-
-        return board;
-
 
     }
 
-    //String printBoard() {
+    private boolean ending(Scanner console){
 
-    //}
 
+        System.out.println("Do you want to play again?");
+        System.out.println("Enter 'y' to start memory again or 'n' to exit.");
+
+        String answer = console.next().toLowerCase();
+
+        if(answer.equals("y")){
+            startAgain = true;
+        } else if (answer.equals("n")){
+            startAgain = false;
+        } else {
+            System.out.print("Ups, You have mistaken! Enter 'y' to start memory again or 'n' to exit. \n");
+            answer = console.next().toLowerCase();
+        }
+        return startAgain;
+    }
 
 }
