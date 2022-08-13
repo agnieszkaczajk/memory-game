@@ -1,17 +1,18 @@
 package org.java.academy;
 
 import java.io.*;
-import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 import java.time.Duration;
 import java.time.Instant;
+import java.util.Date;
 import java.util.Scanner;
-import java.util.Timer;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class Main {
 
     private static final String path = "src/main/resources/Words.txt";
+    private static final String highScorePath = "src/main/resources/HighScore.txt";
     private static WordsRandomizer wordsRandomizer;
     private static GameLevel gameLevel;
 
@@ -20,6 +21,10 @@ public class Main {
     private static Board board;
 
     private boolean startAgain = true;
+
+    private String playerName;
+    long timeElapsed;
+    int usedChances;
 
     String answerRegExp = "[aAbB]\\d";
 
@@ -36,11 +41,13 @@ public class Main {
 
             game.play(console);
 
+            game.saveHighScore(game.gameLevel);
             game.startAgain = game.ending(console);
 
 
             System.out.println("Thank you!");
             System.out.println("Come back soon to play memory again!");
+
         }
 
 
@@ -122,6 +129,7 @@ public class Main {
                 System.out.println(gameLevel.toString());
                 one.setGuessed(true);
                 two.setGuessed(true);
+                gameLevel.guessChances -= 1;
 
                 if(gameLevel.guessChances==0) break;
             } else{
@@ -131,10 +139,12 @@ public class Main {
             if(board.isPlayerWon()){
                 System.out.println("Congratulations! You're winner! ");
                 Instant stop = Instant.now();
-                int leftChances = guessChanceStart- gameLevel.guessChances;
-                long timeElapsed = Duration.between(start,stop).getSeconds();
-                System.out.println("You solved the memory game after " + leftChances +
+                usedChances = guessChanceStart- gameLevel.guessChances;
+                timeElapsed = Duration.between(start,stop).getSeconds();
+                System.out.println("You solved the memory game after " + usedChances +
                         " chances. It took you " + timeElapsed +" seconds.");
+                System.out.println("Enter your name to save your high score.");
+                playerName = console.next();
                 break;
             }
 
@@ -204,5 +214,24 @@ public class Main {
         System.out.println("Oops, you've made a mistake! Choose again! \n");
         return false;
     }
+    
+    private void saveHighScore(GameLevel gameLevel) throws IOException {
+
+        String today = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
+        Score score = new Score(playerName, today, usedChances, timeElapsed);
+
+        HighScore highScore = new HighScore();
+        highScore.updateHighScore(score, gameLevel.getLevel());
+
+//        String fileOutput = score.toString();
+//
+//
+//        try (FileWriter Writer = new FileWriter(fileName)) {
+//            Writer.write(fileOutput);
+//        } catch (IOException e){
+//            System.out.println("There was an error saving your score.");
+//        }
+    }
+
 
 }

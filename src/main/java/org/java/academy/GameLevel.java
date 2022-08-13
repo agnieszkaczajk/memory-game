@@ -26,13 +26,15 @@ public class GameLevel {
     }
 
     public enum DifficultyLevel {
-        EASY(4),
-        HARD(8);
+        EASY(1, "HighScoreEasy.txt"),
+        HARD(2, "HighScoreHard.txt");
 
         int numberOfWords;
+        String filePath;
 
-        DifficultyLevel(int numberOfWords) {
+        DifficultyLevel(int numberOfWords, String filePath) {
             this.numberOfWords = numberOfWords;
+            this.filePath = filePath;
         }
 
     }
