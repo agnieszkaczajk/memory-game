@@ -1,4 +1,4 @@
-package org.java.academy;
+package org.java.academy.score;
 
 import java.util.Comparator;
 

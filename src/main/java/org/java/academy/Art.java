@@ -13,13 +13,13 @@ public class Art {
         System.out.println("   #     # #       #     # #     # #    #     #    ");
         System.out.println("   #     # ####### #     # ####### #     #    #    ");
         System.out.println();
-        System.out.println("            #####     #    #     # ####### ");
-        System.out.println("           #     #   # #   ##   ## #       ");
-        System.out.println("           #        #   #  # # # # #       ");
-        System.out.println("           #  #### #     # #  #  # #####   ");
-        System.out.println("           #     # ####### #     # #       ");
-        System.out.println("           #     # #     # #     # #       ");
-        System.out.println("            #####  #     # #     # #######");
+        System.out.println("            #####     #    #     # #######         ");
+        System.out.println("           #     #   # #   ##   ## #               ");
+        System.out.println("           #        #   #  # # # # #               ");
+        System.out.println("           #  #### #     # #  #  # #####           ");
+        System.out.println("           #     # ####### #     # #               ");
+        System.out.println("           #     # #     # #     # #               ");
+        System.out.println("            #####  #     # #     # #######         ");
         System.out.println();
         System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
 

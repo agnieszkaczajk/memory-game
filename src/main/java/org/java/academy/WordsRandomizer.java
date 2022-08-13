@@ -6,7 +6,7 @@ import java.util.*;
 
 public class WordsRandomizer {
 
-    static List<String> listOfWords = new ArrayList<>();
+    private final List<String> listOfWords = new ArrayList<>();
     public String word;
 
     WordsRandomizer(String path) throws IOException {
@@ -35,7 +35,7 @@ public class WordsRandomizer {
         return result;
     }
 
-    List<String> randomWordsByDifficultyLevel(GameLevel.DifficultyLevel level) {
+    List<String> randomWordsByDifficultyLevel(DifficultyLevel level) {
         return randomWordsByNumber(level.numberOfWords);
     }
 
