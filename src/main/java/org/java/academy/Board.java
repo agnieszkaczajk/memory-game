@@ -47,24 +47,34 @@ public class Board{
 
     public String printBoard() {
         StringBuilder boardPrint = new StringBuilder();
-        boardPrint.append("\n");
+        boardPrint.append("\n").append(formatToName("*"));
 
         for(int number = 1; number <= words.size()/numberOfRows; number++){
-            boardPrint.append(number).append(" ");
+            boardPrint.append(formatToCell(String.valueOf(number)));
         }
         boardPrint.append("\n");
 
         for(String key : boardMap.keySet()) {
             List<Word> wordsInRow = boardMap.get(key);
-            boardPrint.append(key).append(" ");
+            boardPrint.append(formatToName(key));
             for(Word word : wordsInRow) {
-                boardPrint.append(word.toString()).append(" ");
+                String wordToPrint = word.toString();
+                boardPrint.append(formatToCell(wordToPrint));
+                }
+            boardPrint.append("\n");
             }
             boardPrint.append("\n");
 
-        }
-        boardPrint.append("--------------------");
+
+        boardPrint.append("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
         return boardPrint.toString();
+    }
+
+    private String formatToCell(String wordToConvert) {
+        return  String.format("%1$15s", wordToConvert);
+    }
+    private String formatToName(String wordToConvert) {
+        return  String.format("%1$3s", wordToConvert);
     }
 
 
