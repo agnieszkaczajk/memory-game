@@ -1,25 +1,15 @@
 package org.java.academy;
 
 import java.io.*;
-import java.text.SimpleDateFormat;
-import java.time.Duration;
-import java.time.Instant;
-import java.util.Date;
 import java.util.Scanner;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 public class Main {
 
     private static final String path = "src/main/resources/Words.txt";
-    private static WordsRandomizer wordsRandomizer;
-    private static GameLevel gameLevel;
-
-    private static Board board;
+    public static WordsRandomizer wordsRandomizer;
+    public static GameLevel gameLevel;
 
     private static boolean startAgain = true;
-
-    static String answerRegExp = "[aAbB]\\d";
 
 
     public static void main(String[] args) throws IOException {
@@ -29,8 +19,8 @@ public class Main {
         Art.homeScreen();
 
         while(startAgain) {
-            gameLevel = start(console);
-            play(console);
+            gameLevel = start(console, wordsRandomizer);
+            gameLevel.play(console);
             startAgain = ending(console);
             System.out.println("Thank you!");
             System.out.println("Come back soon to play memory again!");
@@ -41,7 +31,7 @@ public class Main {
         wordsRandomizer = new WordsRandomizer(path);
     }
 
-    private static GameLevel start(Scanner console){
+    private static GameLevel start(Scanner console, WordsRandomizer wordsRandomizer){
 
         GameLevel gameLevel;
         System.out.println("Welcome to Words memory game!");
@@ -52,16 +42,16 @@ public class Main {
         while(true){
             if (answer.equals("e")){
 
-                System.out.println("You have chosen level easy");
+                System.out.println("You chose level easy.");
 
-                gameLevel = new GameLevel(GameLevel.DifficultyLevel.EASY);
+                gameLevel = new GameLevel(DifficultyLevel.EASY, wordsRandomizer);
                 break;
 
             } else if (answer.equals("h")){
 
-                System.out.println("You have chosen level hard");
+                System.out.println("You chose level hard");
 
-                gameLevel = new GameLevel(GameLevel.DifficultyLevel.HARD);
+                gameLevel = new GameLevel(DifficultyLevel.HARD, wordsRandomizer);
                 break;
 
             } else {
@@ -72,85 +62,6 @@ public class Main {
         }
         return gameLevel;
 
-    }
-
-    private static void play(Scanner console) throws IOException {
-
-
-        board = new Board(wordsRandomizer.randomWordsByDifficultyLevel(gameLevel.getLevel()));
-        board.createWordsChoice();
-
-        //Instant start = Instant.now();
-        Instant start = Instant.now();
-
-        while(gameLevel.guessChances>0) {
-            Word one = askForWord(console);
-            one.setUncovered(true);
-
-            Word two = askForWord(console);
-            two.setUncovered(true);
-            System.out.println(board.printBoard());
-
-            if(!one.equals(two)){
-                one.setUncovered(false);
-                two.setUncovered(false);
-                gameLevel.guessChances -= 1;
-                if(gameLevel.guessChances == 0) {
-                    System.out.println("Sorry, You're looser!");
-                    break;
-                }
-                System.out.println("Sorry, words did not match. Try again");
-
-            } else if (one.equals(two)){
-
-                System.out.println("Yay! This is a pair!");
-                one.setGuessed(true);
-                two.setGuessed(true);
-                gameLevel.guessChances -= 1;
-
-            } else{
-                System.out.println("Ups! Something gone wrong! Try again!");
-            }
-
-            if(board.isPlayerWon()){
-                System.out.println("Congratulations! You're winner! ");
-                Instant stop = Instant.now();
-                int usedChances = gameLevel.usedChances();
-                long timeElapsed = Duration.between(start,stop).getSeconds();
-                System.out.println("You solved the memory game after " + usedChances +
-                        " chances. It took you " + timeElapsed +" seconds.");
-                console.nextLine(); // to discard /n
-                System.out.println("Enter your name to save your high score:");
-                String playerName = console.nextLine();
-                saveHighScore(gameLevel, playerName, usedChances, timeElapsed);
-                break;
-            }
-            if(gameLevel.guessChances==0) {
-                System.out.println("Sorry, you lost - your chances are over.");
-                break;
-            }
-        }
-    }
-
-    private static Word askForWord(Scanner console) {
-        while (true) {
-            System.out.println(gameLevel.toString());
-            System.out.println(board.printBoard());
-            System.out.println("Choose a word to reveal (e.g. A1)!");
-
-            String answer = console.next().toUpperCase();
-            if(inputValidation(answer, gameLevel.getLevel())) {
-                String rowName = answer.substring(0, 1);
-                int columnId = Integer.parseInt(answer.substring(1));
-
-                Word checkIsUncovered = board.getBoardMap().get(rowName).get(columnId-1);
-                if(checkIsUncovered.isUncovered() || checkIsUncovered.isGuessed()){
-                    System.out.println("Oops! This word is already face up! Choose again!");
-                } else{
-                    return checkIsUncovered;
-                }
-            }
-        }
     }
 
     private static boolean ending(Scanner console){
@@ -174,32 +85,6 @@ public class Main {
             }
         }
         return playAgain;
-    }
-
-     static boolean inputValidation(String answerToValidate, GameLevel.DifficultyLevel level){
-
-        Pattern pattern = Pattern.compile(answerRegExp);
-        Matcher matcher = pattern.matcher(answerToValidate);
-
-        if(matcher.matches()){
-            int answerNumber = Integer.parseInt(answerToValidate.substring(1));
-            if(answerNumber <= level.numberOfWords && answerNumber > 0){
-                return  true;
-            }
-        }
-        System.out.println("Oops, you've made a mistake! Choose again! \n");
-        return false;
-    }
-    
-    private static void saveHighScore(GameLevel gameLevel, String playerName, int usedChances, long timeElapsed) throws IOException {
-
-        String today = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
-        Score score = new Score(playerName, today, usedChances, timeElapsed);
-
-        HighScore highScore = new HighScore();
-        highScore.updateHighScore(score, gameLevel.getLevel());
-        highScore.printHighScore(gameLevel.getLevel());
-
     }
 
 }

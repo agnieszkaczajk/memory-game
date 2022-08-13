@@ -1,6 +1,6 @@
-package org.java.academy;
+package org.java.academy.score;
 
-import sun.awt.AWTAccessor;
+import org.java.academy.DifficultyLevel;
 
 import java.io.FileWriter;
 import java.io.IOException;
@@ -19,17 +19,16 @@ public class HighScore {
     }
 
 
-    boolean updateHighScore(Score score, GameLevel.DifficultyLevel level) throws IOException {
+    public void updateHighScore(Score score, DifficultyLevel level) throws IOException {
 
         List<Score> scores = readHighScoreFile(level);
         scores.add(score);
         scores.sort(new ScoreComparator());
 
         saveToFile(scores, level);
-        return true;
     }
 
-    private void saveToFile(List<Score> scores, GameLevel.DifficultyLevel level) throws IOException {
+    private void saveToFile(List<Score> scores, DifficultyLevel level) throws IOException {
         FileWriter fileWriter = new FileWriter(level.filePath);
 
 
@@ -40,7 +39,7 @@ public class HighScore {
 
     }
 
-    void printHighScore(GameLevel.DifficultyLevel level) throws IOException {
+    public void printHighScore(DifficultyLevel level) throws IOException {
         System.out.println("\nHigh Scores Table:");
         System.out.println("Player name | date | guessing tries | guessing time");
 
@@ -50,7 +49,7 @@ public class HighScore {
         }
     }
 
-    private List<Score> readHighScoreFile(GameLevel.DifficultyLevel level) throws IOException {
+    private List<Score> readHighScoreFile(DifficultyLevel level) throws IOException {
 
         Path path = Paths.get(level.filePath);
 
