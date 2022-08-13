@@ -19,15 +19,15 @@ public class GameLevel {
 
     @Override
     public String toString() {
-        return "\n--------------------\n" +
+        return "\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n" +
                 "Level: " + level + " - " +
                 getLevel().numberOfWords + " pair words \n"+
                 "Guess chances: " + guessChances + "\n";
     }
 
     public enum DifficultyLevel {
-        EASY(1, "HighScoreEasy.txt"),
-        HARD(2, "HighScoreHard.txt");
+        EASY(2, "HighScoreEasy.txt"),
+        HARD(8, "HighScoreHard.txt");
 
         int numberOfWords;
         String filePath;
