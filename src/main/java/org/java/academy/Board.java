@@ -47,7 +47,7 @@ public class Board{
 
     public String printBoard() {
         StringBuilder boardPrint = new StringBuilder();
-        boardPrint.append("\n").append(formatToName("*"));
+        boardPrint.append(formatToName("*"));
 
         for(int number = 1; number <= words.size()/numberOfRows; number++){
             boardPrint.append(formatToCell(String.valueOf(number)));
