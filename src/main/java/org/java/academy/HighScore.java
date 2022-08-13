@@ -1,5 +1,7 @@
 package org.java.academy;
 
+import sun.awt.AWTAccessor;
+
 import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -32,6 +34,7 @@ public class HighScore {
 
         for(int i=0; i < scores.size() && i < numberOfHighScores; i++) {
             fileWriter.append(scores.get(i).toString()).append("\n");
+            System.out.println(scores.get(i));
         }
         fileWriter.close();
 

@@ -30,33 +30,27 @@ public class Main {
 
 
     public static void main(String[] args) throws IOException {
+
         initialization();
         Scanner console = new Scanner(System.in);
         Main game = new Main();
+        Art.homeScreen();
 
         while(game.startAgain) {
             game.gameLevel = game.start(console);
 
-            System.out.println(game.gameLevel);
-
             game.play(console);
 
-            game.saveHighScore(game.gameLevel);
             game.startAgain = game.ending(console);
-
 
             System.out.println("Thank you!");
             System.out.println("Come back soon to play memory again!");
-
         }
-
-
     }
 
       public static void initialization() throws IOException {
         wordsRandomizer = new WordsRandomizer(path);
     }
-
 
     private GameLevel start(Scanner console){
 
@@ -71,7 +65,7 @@ public class Main {
 
                 System.out.println("You have chosen level easy");
 
-                guessChanceStart = 10;
+                guessChanceStart = 4;
                 gameLevel = new GameLevel(GameLevel.DifficultyLevel.EASY, guessChanceStart);
 
                 break;
@@ -94,7 +88,7 @@ public class Main {
 
     }
 
-    private void play(Scanner console){
+    private void play(Scanner console) throws IOException {
 
 
         board = new Board(wordsRandomizer.randomWordsByDifficultyLevel(gameLevel.getLevel()));
@@ -115,23 +109,19 @@ public class Main {
                 one.setUncovered(false);
                 two.setUncovered(false);
                 gameLevel.guessChances -= 1;
-                System.out.println("Sorry, words did not match. Try again");
-                System.out.println(gameLevel.toString());
-                System.out.println(gameLevel.guessChances);
                 if(gameLevel.guessChances == 0) {
                     System.out.println("Sorry, You're looser!");
                     break;
                 }
+                System.out.println("Sorry, words did not match. Try again");
 
             } else if (one.equals(two)){
 
                 System.out.println("Yay! This is a pair!");
-                System.out.println(gameLevel.toString());
                 one.setGuessed(true);
                 two.setGuessed(true);
                 gameLevel.guessChances -= 1;
 
-                if(gameLevel.guessChances==0) break;
             } else{
                 System.out.println("Ups! Something gone wrong! Try again!");
             }
@@ -143,19 +133,22 @@ public class Main {
                 timeElapsed = Duration.between(start,stop).getSeconds();
                 System.out.println("You solved the memory game after " + usedChances +
                         " chances. It took you " + timeElapsed +" seconds.");
-                System.out.println("Enter your name to save your high score.");
-                playerName = console.next();
+                console.nextLine(); // to discard /n
+                System.out.println("Enter your name to save your high score:");
+                playerName = console.nextLine();
+                saveHighScore(gameLevel);
                 break;
             }
-
-
-
+            if(gameLevel.guessChances==0) {
+                System.out.println("Sorry, you lost - your chances are over.");
+                break;
+            }
         }
-
     }
 
     private Word askForWord(Scanner console) {
         while (true) {
+            System.out.println(gameLevel.toString());
             System.out.println(board.printBoard());
             System.out.println("Choose a word to reveal (e.g. A1)!");
 
@@ -165,7 +158,6 @@ public class Main {
                 int columnId = Integer.parseInt(answer.substring(1));
 
                 Word checkIsUncovered = board.getBoardMap().get(rowName).get(columnId-1);
-                //return board.getBoardMap().get(rowName).get(columnId-1);
                 if(checkIsUncovered.isUncovered() || checkIsUncovered.isGuessed()){
                     System.out.println("Oops! This word is already face up! Choose again!");
                 } else{
@@ -208,9 +200,7 @@ public class Main {
             if(answerNumber <= level.numberOfWords && answerNumber > 0){
                 return  true;
             }
-
         }
-
         System.out.println("Oops, you've made a mistake! Choose again! \n");
         return false;
     }
@@ -223,15 +213,6 @@ public class Main {
         HighScore highScore = new HighScore();
         highScore.updateHighScore(score, gameLevel.getLevel());
 
-//        String fileOutput = score.toString();
-//
-//
-//        try (FileWriter Writer = new FileWriter(fileName)) {
-//            Writer.write(fileOutput);
-//        } catch (IOException e){
-//            System.out.println("There was an error saving your score.");
-//        }
     }
-
 
 }
