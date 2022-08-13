@@ -4,8 +4,6 @@ import java.io.*;
 import java.util.Scanner;
 
 public class Main {
-
-    private static final String path = "src/main/resources/Words.txt";
     public static WordsRandomizer wordsRandomizer;
     public static GameLevel gameLevel;
 
@@ -28,7 +26,7 @@ public class Main {
     }
 
       public static void initialization() throws IOException {
-        wordsRandomizer = new WordsRandomizer(path);
+        wordsRandomizer = new WordsRandomizer(Main.class.getClassLoader().getResourceAsStream("Words.txt"));
     }
 
     private static GameLevel start(Scanner console, WordsRandomizer wordsRandomizer){

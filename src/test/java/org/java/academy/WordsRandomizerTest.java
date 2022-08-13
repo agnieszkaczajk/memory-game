@@ -3,6 +3,7 @@ package org.java.academy;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -10,7 +11,7 @@ import java.util.Set;
 import static org.junit.jupiter.api.Assertions.*;
 class WordsRandomizerTest {
 
-    private final String filePath = "src/test/resources/wordsTest.txt";
+    private final InputStream filePath = WordsRandomizerTest.class.getClassLoader().getResourceAsStream("wordsTest.txt");
 
 
     @Test

@@ -2,6 +2,7 @@ package org.java.academy;
 
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.*;
 
 public class WordsRandomizer {
@@ -9,13 +10,10 @@ public class WordsRandomizer {
     private final List<String> listOfWords = new ArrayList<>();
     public String word;
 
-    WordsRandomizer(String path) throws IOException {
-
-        try(FileInputStream fileInputStream = new FileInputStream(path);
-            Scanner s = new Scanner(fileInputStream)) {
-            while (s.hasNext()) {
-                listOfWords.add(s.next());
-            }
+    WordsRandomizer(InputStream inputStream) throws IOException {
+        Scanner s = new Scanner(inputStream);
+        while (s.hasNext()) {
+            listOfWords.add(s.next());
         }
     }
 
