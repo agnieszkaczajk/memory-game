@@ -1,7 +1,9 @@
 package org.java.academy;
 
+import java.util.Objects;
+
 public class Word{
-    private String word;
+    private final String word;
     private boolean guessed = false;
     private boolean uncovered = false;
 
@@ -27,7 +29,7 @@ public class Word{
 
     @Override
     public boolean equals(Object obj){
-        if(obj.toString() == this.word) {
+        if(Objects.equals(obj.toString(), this.word)) {
             return true;
         } else{
             return false;

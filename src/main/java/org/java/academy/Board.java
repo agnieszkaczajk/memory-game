@@ -4,10 +4,9 @@ import java.util.*;
 
 public class Board{
 
-    private List<String> words = new ArrayList<>();
-    private Word word;
-    private Map<String, List<Word>> boardMap = new HashMap<>();
-    int numberOfRows = 2;
+    private final List<String> words = new ArrayList<>();
+    private final Map<String, List<Word>> boardMap = new HashMap<>();
+    private final int numberOfRows = 2;
 
     Board(List<String> words){
         this.words.addAll(words);
@@ -21,7 +20,7 @@ public class Board{
 
         List<Word> wordChoice = new ArrayList<>();
         for (int i = 0; i < words.size(); i++) {
-            word = new Word(words.get(i));
+            Word word = new Word(words.get(i));
             wordChoice.add(word);
         }
 

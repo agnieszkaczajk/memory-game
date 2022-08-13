@@ -1,6 +1,5 @@
 package org.java.academy;
 
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
@@ -41,7 +40,7 @@ class WordsRandomizerTest {
 
         WordsRandomizer wordsRandomizer = new WordsRandomizer(filePath);
 
-        List<String> wordsEasy = wordsRandomizer.randomWordsByDifficultyLevel(GameLevel.DifficultyLevel.EASY);
+        List<String> wordsEasy = wordsRandomizer.randomWordsByDifficultyLevel(DifficultyLevel.EASY);
 
         assertEquals(4, wordsEasy.size() );
     }
@@ -51,7 +50,7 @@ class WordsRandomizerTest {
 
         WordsRandomizer wordsRandomizer = new WordsRandomizer(filePath);
 
-        List<String> wordsHard = wordsRandomizer.randomWordsByDifficultyLevel(GameLevel.DifficultyLevel.HARD);
+        List<String> wordsHard = wordsRandomizer.randomWordsByDifficultyLevel(DifficultyLevel.HARD);
 
         assertEquals(8, wordsHard.size() );
 

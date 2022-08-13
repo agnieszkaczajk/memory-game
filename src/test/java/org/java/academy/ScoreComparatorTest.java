@@ -1,5 +1,7 @@
 package org.java.academy;
 
+import org.java.academy.score.Score;
+import org.java.academy.score.ScoreComparator;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
