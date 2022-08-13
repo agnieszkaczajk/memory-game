@@ -27,6 +27,5 @@ public class Score {
     @Override
     public String toString(){
         return playerName + " | " + date + " | " + usedChances + " | " + timeInSeconds;
-
     }
 }

@@ -32,12 +32,22 @@ public class HighScore {
     private void saveToFile(List<Score> scores, GameLevel.DifficultyLevel level) throws IOException {
         FileWriter fileWriter = new FileWriter(level.filePath);
 
+
         for(int i=0; i < scores.size() && i < numberOfHighScores; i++) {
             fileWriter.append(scores.get(i).toString()).append("\n");
-            System.out.println(scores.get(i));
         }
         fileWriter.close();
 
+    }
+
+    void printHighScore(GameLevel.DifficultyLevel level) throws IOException {
+        System.out.println("\nHigh Scores Table:");
+        System.out.println("Player name | date | guessing tries | guessing time");
+
+        List<Score> scoresToPrint = readHighScoreFile(level);
+        for(Score score : scoresToPrint) {
+            System.out.println(score.toString());
+        }
     }
 
     private List<Score> readHighScoreFile(GameLevel.DifficultyLevel level) throws IOException {
