@@ -8,9 +8,9 @@ public class GameLevel {
     public boolean remain = true;
 
 
-    GameLevel(DifficultyLevel level, int guessChances){
+    GameLevel(DifficultyLevel level){
         this.level=level;
-        this.guessChances = guessChances;
+        this.guessChances = level.numberOfChances;
     }
 
     public DifficultyLevel getLevel(){
@@ -22,18 +22,24 @@ public class GameLevel {
         return "\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n" +
                 "Level: " + level + " - " +
                 getLevel().numberOfWords + " pair words \n"+
-                "Guess chances: " + guessChances + "\n";
+                "Guess chances: " + guessChances +"\n";
+    }
+
+    public int usedChances() {
+        return level.numberOfChances - guessChances;
     }
 
     public enum DifficultyLevel {
-        EASY(2, "HighScoreEasy.txt"),
-        HARD(8, "HighScoreHard.txt");
+        EASY(4, 10, "HighScoreEasy.txt"),
+        HARD(8, 15, "HighScoreHard.txt");
 
         int numberOfWords;
+        int numberOfChances;
         String filePath;
 
-        DifficultyLevel(int numberOfWords, String filePath) {
+        DifficultyLevel(int numberOfWords, int numberOfChances, String filePath) {
             this.numberOfWords = numberOfWords;
+            this.numberOfChances = numberOfChances;
             this.filePath = filePath;
         }
 
